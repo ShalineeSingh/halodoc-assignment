@@ -31,8 +31,7 @@
         <label>
           <span class="heading-6 text-muted">Due Date</span>
         </label>
-        <input type="text" class="form-control" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" bsDatepicker [(ngModel)]="dueDate"
-          placeholder="Due Date" (ngModelChange)="dueDateFilter()">
+        <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(ngModel)]="dueDate" placeholder="Due Date" (ngModelChange)="dueDateFilter()">
       </div>
       <div class="col-sm-3">
         <button type="button" class="float-right btn btn-sm btn-primary" (click)="goToForm()">Create New Task</button>
@@ -66,11 +65,12 @@
           <div class="card-heading text-center bg-warning text-white">Medium Priority</div>
           <div class="card-body">
             <div *ngFor="let task of task_list.priority_2" class="card card-default" dnd-draggable [dragEnabled]="true" [dragData]="task"
-              (onDragSuccess)="removeFomBucket($event, 'priority_2')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task,'priority_2')">
+              (onDragSuccess)="removeFomBucket($event, 'priority_2')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task)">
               <div class="card-body">
                 <div class="clearfix">
                   <h5 class="card-title float-left">{{task.message}}</h5>
-                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
+                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task, 'priority_2')">
+                  </i>
                 </div>
                 <div class="card-details font-weight-lighter">
                   <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
@@ -87,11 +87,12 @@
           <div class="card-heading text-center bg-success text-white">Low Priority</div>
           <div class="card-body">
             <div *ngFor="let task of task_list.priority_3" class="card card-default" dnd-draggable [dragEnabled]="true" [dragData]="task"
-              (onDragSuccess)="removeFomBucket($event, 'priority_3')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task,'priority_3')">
+              (onDragSuccess)="removeFomBucket($event, 'priority_3')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task)">
               <div class="card-body">
                 <div class="clearfix">
                   <h5 class="card-title float-left">{{task.message}}</h5>
-                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
+                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task, 'priority_3')">
+                  </i>
                 </div>
                 <div class="card-details font-weight-lighter">
                   <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
@@ -105,11 +106,10 @@
       </div>
     </div>
     <ng-template #cardView>
-      <div *ngFor="let task of filtered_task_list" class="card card-default" (click)="goToEdit(task,'priority_3')">
+      <div *ngFor="let task of filtered_task_list" class="card card-default" (click)="goToEdit(task)">
         <div class="card-body">
           <div class="clearfix">
             <h5 class="card-title float-left">{{task.message}}</h5>
-            <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
           </div>
           <div class="card-details font-weight-lighter">
             <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>

@@ -21,8 +21,7 @@
           <label>
             <span class="heading-6 text-muted">Due Date</span>
           </label>
-          <input type="text" class="form-control" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dueDate"
-            placeholder="Due Date">
+          <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dueDate" placeholder="Due Date">
         </div>
       </div>
       <div class="row">
