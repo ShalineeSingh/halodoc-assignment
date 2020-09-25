@@ -1,0 +1,18 @@
+.list-container {
+  .card {
+    .card-heading {
+      padding: 10px;
+      border-radius: 4px 4px 0 0;
+    }
+    &.card-default {
+      margin: 10px 0;
+      .card-details {
+        font-size: 14px;
+      }
+      .fa-trash {
+        position: absolute;
+        right: 5px;
+      }
+    }
+  }
+}

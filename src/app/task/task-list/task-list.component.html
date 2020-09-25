@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="container text-center mt-4" *ngIf="page_loader">
+    <i class="fa fa-spinner fa-spin fa-5x text-warning"></i>
+  </div>
+  <div class="container list-container p-4 mt-4" *ngIf="!page_loader">
+    <div class="row clearfix mb-4">
+      <div class="col-sm-3">
+        <label>
+          <span class="heading-6 text-muted">Task Title</span>
+        </label>
+        <input type="text" class="form-control" aria-describedby="input" placeholder="Task Title" [(ngModel)]="taskMessage" name="title"
+          #title="ngModel" (ngModelChange)="messageFilter()" autocomplete="off">
+      </div>
+      <div class="col-sm-3">
+        <label>
+          <span class="heading-6 text-muted">Priority</span>
+        </label>
+        <ng-select name="priority" [items]="priority_map" placeholder="Choose Priority" [(ngModel)]="taskPriority" [clearable]="false"
+          #priority="ngModel" [searchable]="false" (change)="priorityFilter()">
+          <ng-template class="tags-container" ng-label-tmp let-item="item" let-clear="clear">
+            <span [innerText]="item.name" class="tags-title"></span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-container">
+              <span class="name" [innerHtml]="item.name" [title]="item.name"></span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-3">
+        <label>
+          <span class="heading-6 text-muted">Due Date</span>
+        </label>
+        <input type="text" class="form-control" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" bsDatepicker [(ngModel)]="dueDate"
+          placeholder="Due Date" (ngModelChange)="dueDateFilter()">
+      </div>
+      <div class="col-sm-3">
+        <button type="button" class="float-right btn btn-sm btn-primary" (click)="goToForm()">Create New Task</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="taskPriority.value === 4; else cardView">
+      <div class="col-sm-4" dnd-droppable (onDropSuccess)="addToBucket($event, 'priority_1')" [dropZones]="['priority_1']">
+        <div class="card">
+          <div class="card-heading text-center bg-danger text-white">High Priority</div>
+          <div class="card-body">
+            <div *ngFor="let task of task_list.priority_1" class="card card-default" dnd-draggable [dragEnabled]="true" [dragData]="task"
+              (onDragSuccess)="removeFomBucket($event, 'priority_1')" [dropZones]="['priority_2', 'priority_3']" (click)="goToEdit(task)">
+              <div class="card-body">
+                <div class="clearfix">
+                  <h5 class="card-title float-left">{{task.message}}</h5>
+                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task, 'priority_1')">
+                  </i>
+                </div>
+                <div class="card-details font-weight-lighter">
+                  <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
+                  <p *ngIf="task.due_date" class="my-0">Due Date: {{task.due_date |date : 'medium'}}</p>
+                  <p class="my-0">Created On: {{task.created_on |date : 'medium'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4" dnd-droppable (onDropSuccess)="addToBucket($event, 'priority_2')" [dropZones]="['priority_2']">
+        <div class="card">
+          <div class="card-heading text-center bg-warning text-white">Medium Priority</div>
+          <div class="card-body">
+            <div *ngFor="let task of task_list.priority_2" class="card card-default" dnd-draggable [dragEnabled]="true" [dragData]="task"
+              (onDragSuccess)="removeFomBucket($event, 'priority_2')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task,'priority_2')">
+              <div class="card-body">
+                <div class="clearfix">
+                  <h5 class="card-title float-left">{{task.message}}</h5>
+                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
+                </div>
+                <div class="card-details font-weight-lighter">
+                  <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
+                  <p *ngIf="task.due_date" class="my-0">Due Date: {{task.due_date |date : 'medium'}}</p>
+                  <p class="my-0">Created On: {{task.created_on |date : 'medium'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4" dnd-droppable (onDropSuccess)="addToBucket($event, 'priority_3')" [dropZones]="['priority_3']">
+        <div class="card">
+          <div class="card-heading text-center bg-success text-white">Low Priority</div>
+          <div class="card-body">
+            <div *ngFor="let task of task_list.priority_3" class="card card-default" dnd-draggable [dragEnabled]="true" [dragData]="task"
+              (onDragSuccess)="removeFomBucket($event, 'priority_3')" [dropZones]="['priority_1', 'priority_3']" (click)="goToEdit(task,'priority_3')">
+              <div class="card-body">
+                <div class="clearfix">
+                  <h5 class="card-title float-left">{{task.message}}</h5>
+                  <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
+                </div>
+                <div class="card-details font-weight-lighter">
+                  <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
+                  <p *ngIf="task.due_date" class="my-0">Due Date: {{task.due_date |date : 'medium'}}</p>
+                  <p class="my-0">Created On: {{task.created_on |date : 'medium'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #cardView>
+      <div *ngFor="let task of filtered_task_list" class="card card-default" (click)="goToEdit(task,'priority_3')">
+        <div class="card-body">
+          <div class="clearfix">
+            <h5 class="card-title float-left">{{task.message}}</h5>
+            <i class="fa fa-trash float-right" aria-hidden="true" (click)="$event.stopPropagation();deleteTask(task)"> </i>
+          </div>
+          <div class="card-details font-weight-lighter">
+            <p *ngIf="task.assigned_name" class="my-0">Assigned To: {{task.assigned_name}}</p>
+            <p *ngIf="task.due_date" class="my-0">Due Date: {{task.due_date |date : 'medium'}}</p>
+            <p class="my-0">Created On: {{task.created_on |date : 'medium'}}</p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>

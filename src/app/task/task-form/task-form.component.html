@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="form-container col-sm-4 offset-4 p-4 mt-4">
+    <form #task_form="ngForm" (ngSubmit)="task_form.valid && submitForm()" autocomplete="off">
+      <div class="row">
+        <div class="col-sm-12 form-group" [class.has-error]="((title.touched || title.dirty) && title.invalid) || (task_form.submitted && title.invalid)">
+          <label>
+            <span class="heading-6 text-muted">Task Title</span>
+            <span class="text-danger">*</span>
+          </label>
+          <input type="text" class="form-control" aria-describedby="input" placeholder="Task Title" [(ngModel)]="task.message" name="title"
+            #title="ngModel" required>
+          <p class="help-block" *ngIf="((title.touched || title.dirty) && title.invalid) || (task_form.submitted && title.invalid)">
+            <span class="text-danger" *ngIf="title.errors.required">
+              <span [innerHtml]="'Task Title is required'"></span>
+            </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label>
+            <span class="heading-6 text-muted">Due Date</span>
+          </label>
+          <input type="text" class="form-control" [minDate]="minDate" [maxDate]="maxDate" #dp="bsDatepicker" bsDatepicker [(bsValue)]="dueDate"
+            placeholder="Due Date">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label>
+            <span class="heading-6 text-muted">Priority</span>
+          </label>
+          <ng-select name="priority" [items]="priority_map" placeholder="Choose Priority" [(ngModel)]="taskPriority" [clearable]="true"
+            #priority="ngModel" [searchable]="false">
+            <ng-template class="tags-container" ng-label-tmp let-item="item" let-clear="clear">
+              <span [innerText]="item.name" class="tags-title"></span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div class="option-container">
+                <span class="name" [innerHtml]="item.name" [title]="item.name"></span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label>
+            <span class="heading-6 text-muted">Assign To</span>
+          </label>
+          <ng-select name="assignee" [items]="users_list" placeholder="Choose Assignee" [(ngModel)]="taskAssignee" [clearable]="true"
+            #assignee="ngModel" [searchable]="false">
+            <ng-template class="tags-container" ng-label-tmp let-item="item" let-clear="clear">
+              <span [innerText]="item.name" class="tags-title"></span>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div class="option-container">
+                <img *ngIf="item.picture" class="user-image" src="{{item.picture}}">
+                <span class="name" [innerHtml]="item.name" [title]="item.name"></span>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mx-auto">
+          <button type="submit" class="btn btn-primary submit-btn">
+            <i *ngIf="button_loader" class="fa fa-spinner fa-spin text-white"></i>
+            <span *ngIf="!button_loader">Submit</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
