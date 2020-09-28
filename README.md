@@ -1,4 +1,4 @@
-# DevzaAssignment
+# halodocAssignment
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.1.
 
@@ -13,4 +13,5 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 It will start the server on port 4200. Go to `http://localhost:4200/` to see the project in action.
 
-# devza-angular-assignment
+# halodoc-angular-assignment
+# halodoc-assignment
