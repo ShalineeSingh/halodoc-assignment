@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="container text-center mt-4" *ngIf="page_loader">
+    <i class="fa fa-spinner fa-spin fa-5x text-warning"></i>
+  </div>
+  <div class="container details-container p-4 mt-4" *ngIf="!page_loader">
+    <div class="repo-heading">
+      <h3>{{repo_name}}</h3>
+    </div>
+    <h4>Issue</h4>
+    <div class="header">
+      {{issue_details.title}} #{{issue_details.number}}
+    </div>
+    <div class="labels-container">
+      <h3>{{issue_details.state}}</h3>
+    </div>
+    <div class="body-container col-md-8">
+      <span [innerHTML]="issue_details.body"></span>
+    </div>
+    <div class="col-md-4">
+      <span *ngFor="let label of issue_details.labels" [ngStyle]="{'background-color':'#'+ label.color}" class="issue-label">
+        {{label.name}}
+      </span>
+    </div>
+  </div>
+</div>

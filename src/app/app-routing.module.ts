@@ -1,25 +1,21 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { TaskListComponent } from "./task/task-list/task-list.component";
-import { TaskFormComponent } from "./task/task-form/task-form.component";
-import { TaskComponent } from "./task/task.component";
+import { IssueListComponent } from "./issues/issue-list/issue-list.component";
+import { IssueComponent } from "./issues/issue.component";
+import { IssueViewComponent } from "./issues/issue-view/issue-view.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: TaskComponent,
+    component: IssueComponent,
     children: [
       {
         path: "",
-        component: TaskListComponent
+        component: IssueListComponent
       },
       {
-        path: "form",
-        component: TaskFormComponent
-      },
-      {
-        path: ":id",
-        component: TaskFormComponent
+        path: "view/:id",
+        component: IssueViewComponent
       }
     ]
   }
@@ -29,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

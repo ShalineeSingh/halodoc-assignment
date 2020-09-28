@@ -1,0 +1,18 @@
+.issue-list {
+  .issue-wrapper {
+    border: 1px solid #ccc;
+    border-bottom: none;
+    &:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+    .issue-label {
+      padding: 5px;
+      border-radius: 5px;
+      margin: 0 5px;
+      font-size: 12px;
+    }
+    .comments {
+      font-size: 12px;
+    }
+  }
+}

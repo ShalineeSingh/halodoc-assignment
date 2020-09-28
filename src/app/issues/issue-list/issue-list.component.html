@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="container text-center mt-4" *ngIf="page_loader">
+    <i class="fa fa-spinner fa-spin fa-5x text-warning"></i>
+  </div>
+  <div class="container list-container p-4 mt-4" *ngIf="!page_loader">
+    <div class="repo-heading">
+      <h3>{{repo_details.full_name}}</h3>
+    </div>
+    <!--  -->
+    <div class="search-container row">
+      <div class="form-group col-md-4">
+        <input autocomplete="off" type="text" class="form-control" name="param" [(ngModel)]="search_param" placeholder="Search Issues"
+          #param="ngModel">
+      </div>
+      <div class="col-md-3 form-group">
+        <ng-select name="teams" [multiple]="true" [items]="label_select.list | async" bindLabel="name" placeholder="Choose Label"
+          [loading]="label_select.loader" [typeahead]="label_select.typeahead" [(ngModel)]="selectedLabels" loadingText="Loading..."
+          notFoundText="No matches found" typeToSearchText="Type to search">
+          <ng-template ng-label-tmp let-item="item" let-clear="clear">
+            <div class="chips">
+              <span [innerHtml]="item.name" [title]="item.name" class="chips-title"></span>
+              <span class="icon-error-round" (click)="clear(item)"></span>
+            </div>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-container">
+              <span class="name" [innerHtml]="item.name" [title]="item.name"></span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-primary btn-sm" (click)="searchParam()">Search</button>
+      </div>
+    </div>
+    <!--  -->
+    <div class="header">
+      <span class="open-count">
+        {{repo_details.open_issues_count}} Open
+      </span>
+      <span class="closed-count">
+        {{repo_details.closed_issues_count || 0}} Closed
+      </span>
+    </div>
+    <div class="issue-list">
+      <div *ngFor="let issue of issue_list" class="issue-wrapper p-3 cursor-pointer" (click)="goToIssue(issue.url, issue.number)">
+        <span>{{issue.title}}</span>
+        <span class="float-right comments">
+          {{issue.comments}} comments
+        </span>
+        <div class="labels-container">
+          <span *ngFor="let label of issue.labels" [ngStyle]="{'background-color':'#'+ label.color}" class="issue-label">
+            {{label.name}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto my-3 text-center col-md-9 offset-md-2">
+    <pagination [totalItems]="total_items" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" [maxSize]="10"></pagination>
+  </div>
+</div>
